@@ -1,0 +1,33 @@
+name: Update Node.js
+
+on:
+  schedule:
+    - cron: "0 11 * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions: {}
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@<sha> #x.y.z
+
+      - name: Get current Node.js version
+        id: current_version
+        run: echo "version=$(cat .nvmrc)" >> "$GITHUB_OUTPUT"
+
+      - name: Set version in .nvmrc
+        id: latest_version
+        run: |
+          version=$(curl -s https://nodejs.org/download/release/index.json | jq -r '[.[] | select(.lts != false)][0].version')
+          echo "${version}" > .nvmrc
+          echo "version=$(cat .nvmrc)" >> "$GITHUB_OUTPUT"
