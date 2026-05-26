@@ -19,7 +19,7 @@ jobs:
       pull-requests: write
     steps:
       - name: Checkout the repository
-        uses: actions/checkout@<sha> #x.y.z
+        uses: actions/checkout@v6
 
       - name: Get current Node.js version
         id: current_version
