@@ -1,9 +1,8 @@
-name: Update Node.js
+name: Update .nvmrc with latest Node.js LTS version
 
 on:
   schedule:
     - cron: "0 11 * * *"
-  workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -38,7 +37,7 @@ jobs:
           base: main
           branch: update-node-lts-nvmrc
           delete-branch: true
-          title: Update Node.js LTS version in .nvmrc
-          commit-message: Update Node.js LTS version in .nvmrc
+          title: Update .nvmrc with latest Node.js LTS version
+          commit-message: Update .nvmrc with latest Node.js LTS version
           body: |
             Updates `.nvmrc` from `${{ steps.current_version.outputs.version }}` to `${{ steps.latest_version.outputs.version }}`.
