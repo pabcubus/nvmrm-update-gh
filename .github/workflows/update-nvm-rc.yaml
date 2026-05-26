@@ -31,3 +31,14 @@ jobs:
           version=$(curl -s https://nodejs.org/download/release/index.json | jq -r '[.[] | select(.lts != false)][0].version')
           echo "${version}" > .nvmrc
           echo "version=$(cat .nvmrc)" >> "$GITHUB_OUTPUT"
+
+      - name: Create pull request
+        uses: peter-evans/create-pull-request@v8
+        with:
+          base: main
+          branch: update-node-lts-nvmrc
+          delete-branch: true
+          title: Update Node.js LTS version in .nvmrc
+          commit-message: Update Node.js LTS version in .nvmrc
+          body: |
+            Updates `.nvmrc` from `${{ steps.current_version.outputs.version }}` to `${{ steps.latest_version.outputs.version }}`.
